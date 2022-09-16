@@ -9,6 +9,7 @@ import Card from "react-bootstrap/Card";
 
 function Product() {
   const [data, setData] = useState([]);
+  const [searchData, setSearchData] = useState(data);
 
   const getProducts = () => {
     fetch(
@@ -16,8 +17,11 @@ function Product() {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log("val =", data);
-        setData(data).catch((err) => console.log(err));
+        console.log("value", data);
+        setData(data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -33,9 +37,15 @@ function Product() {
             placeholder="Search the Products"
             aria-label="Search the Products"
             aria-describedby="basic-addon2"
+            onChange={(event) => {
+              setSearchData(event.target.value);
+            }}
           />
           <Button variant="outline-secondary" id="button-addon2">
             Search
+          </Button>
+          <Button variant="outline-secondary" id="button-addon2">
+            Filter
           </Button>
         </InputGroup>
       </Container>
@@ -44,8 +54,29 @@ function Product() {
         <h2 style={{ textAlign: "center" }}>Products</h2>
 
         <div className="d-flex align-content-start flex-wrap">
-          {data &&
-            data.map((item, id) => {
+          {data
+            .filter((item) => {
+              if (searchData == "") {
+                return item;
+              } else if (
+                item.name.toLowerCase().includes(searchData.toLowerCase())
+              ) {
+                return item;
+              } else if (
+                item.gender.toLowerCase().includes(searchData.toLowerCase())
+              ) {
+                return item;
+              } else if (
+                item.color.toLowerCase().includes(searchData.toLowerCase())
+              ) {
+                return item;
+              } else if (
+                item.type.toLowerCase().includes(searchData.toLowerCase())
+              ) {
+                return item;
+              }
+            })
+            .map((item, key) => {
               return (
                 <Card
                   className="w-[220px] inline-block p-20  cursor-pointer hover:scale-105 ease-in-out duration-300 "
@@ -53,9 +84,13 @@ function Product() {
                 >
                   <Card.Img variant="bottom" src={item.imageURL} />
 
-                  <Card.Body style={{ textAlign: "center" }}>
-                    <Card.Title key={id}>{item.name}</Card.Title>
+                  <Card.Body style={{ textAlign: "center" }} key={key}>
+                    <Card.Title>{item.name}</Card.Title>
+                    <Card.Text>
+                      {item.color} - {item.gender} - {item.type}
+                    </Card.Text>
                     <Card.Text>Rs {item.price}</Card.Text>
+
                     <Button variant="primary">Add to cart</Button>
                   </Card.Body>
                 </Card>

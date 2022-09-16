@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Cart from "./components/CartPage/Cart";
 import NavbarContainer from "./components/Navbar/NavbarContainer";
 import Product from "./components/ProductPage/Product";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 
 function App() {
   return (
     <div className="app">
       <Router>
-        <NavbarContainer />
-        <Switch>
-          <Route exact path="/" component={Product} />
-          <Route path="/cart" component={Cart} />
-        </Switch>
+        <NavbarContainer/>
+        <Routes>
+          <Route exact path="/" element={<Product/>} />
+          <Route path="/cart" element={<Cart/>} />
+        </Routes>
       </Router>
     </div>
   );
