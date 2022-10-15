@@ -11,6 +11,8 @@ function Product() {
   const [data, setData] = useState([]);
   const [searchData, setSearchData] = useState(data);
 
+  const [darkmood, setDarkmood] = useState(false);
+
   const getProducts = () => {
     fetch(
       "https://leaguex.s3.ap-south-1.amazonaws.com/task/shopping/catalogue.json"
@@ -51,9 +53,21 @@ function Product() {
       </Container>
 
       <Container>
+        <div className={`page ${darkmood && "dark"}`}>
+          <button className="dark" onClick={() => setDarkmood(true)}>
+            Dark
+          </button>
+          <button className="light" onClick={() => setDarkmood(false)}>
+            Light
+          </button>
+        </div>
+
         <h2 style={{ textAlign: "center" }}>Products</h2>
 
-        <div className="d-flex align-content-start flex-wrap">
+        <div
+          className="d-flex align-content-start flex-wrap"
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        >
           {data
             .filter((item) => {
               if (searchData == "") {
